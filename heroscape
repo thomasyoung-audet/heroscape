@@ -1,0 +1,76 @@
+#!/bin/bash
+
+#Script for turns in heroscape
+
+
+containsElement () {
+  local e match="$1"
+  shift
+  for e
+	do 
+	if [[ "$e" == "$match" ]] ; then 
+		echo 1
+		exit
+	fi
+	done
+  echo 0
+}
+
+typeset -i num=$#
+typeset -i i=0
+typeset -i j=0
+
+if [ num = 0 ]; then
+    echo "Illegal number of parameters, enter player names."
+fi
+
+for var in $@	
+	do
+	players[j]=$var
+	j=j+1
+	done
+
+while [ true ]
+do
+	#choose random turn order
+	turns[0]=-1
+	j=0
+	i=0
+	echo "-------------------------------------------------"
+	echo "The turn order is:"
+	while [ $i -lt $num ]
+		do
+			random=$(( ( RANDOM % $num )  ))
+			cont=$(containsElement "$random" "${turns[@]}")
+			if [ $cont == 0 ] ; then
+				echo "$(($i+1))) ${players[$random]}"
+				turns[j]=$random
+				j=j+1
+				i=i+1
+			fi
+		done
+	
+	echo "Press enter for new turn. Enter a name to remove it. Ctrl-C to end the progam"
+	read deadname
+	if ! [ -z $deadname ]; then
+		#check $deadname against names in $players. If its found remove it
+		cont=$(containsElement "$deadname" "${players[@]}")
+		if [ $cont == 1 ]; then
+			new_list=() # Not strictly necessary, but added for clarity
+			var="$deadname"
+			for item in ${players[@]}
+			do
+    			if [ "$item" != "$var" ]
+    			then
+       				new_list+=("$item")
+    			fi
+			done
+			players=("${new_list[@]}")
+			unset new_list
+			num=num-1
+		else
+			echo "Text entered not player name"
+		fi
+	fi
+	unset turns
+done
