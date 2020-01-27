@@ -20,8 +20,9 @@ typeset -i num=$#
 typeset -i i=0
 typeset -i j=0
 #make sure player names are inputed
-if [ num = 0 ]; then
+if [ $num = 0 ]; then
     echo "Illegal number of parameters, enter player names."
+	exit	
 fi
 #fill array of players with the player names
 for var in $@	
@@ -75,7 +76,11 @@ do
 			num=num-1
 		else
 			echo "Text entered not player name"
-		fi
+		fi	
+	fi
+	if [ $num = 1 ]; then
+		echo "Congratulations" ${players[0]} ", you win!"
+		exit	
 	fi
 	unset turns
 done
