@@ -2,7 +2,7 @@
 
 #Script for turns in heroscape
 
-
+#todo: maybe when theres only one player left in $players, end program and display "$players[0] gets the chicken dinner"
 containsElement () {
   local e match="$1"
   shift
@@ -19,23 +19,28 @@ containsElement () {
 typeset -i num=$#
 typeset -i i=0
 typeset -i j=0
-
+#make sure player names are inputed
 if [ num = 0 ]; then
     echo "Illegal number of parameters, enter player names."
 fi
-
+#fill array of players with the player names
 for var in $@	
 	do
 	players[j]=$var
 	j=j+1
 	done
 
+#displaying the turn order
 while [ true ]
 do
 	#choose random turn order
 	turns[0]=-1
 	j=0
 	i=0
+	echo .
+	echo .
+	echo .
+	echo .
 	echo "-------------------------------------------------"
 	echo "The turn order is:"
 	while [ $i -lt $num ]
